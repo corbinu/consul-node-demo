@@ -1,0 +1,50 @@
+{
+  "name": "@corbinu/cb-travel-demo",
+  "version": "0.0.4",
+  "description": "Sample Application for Couchbase, Node.js, Angular, and Express",
+  "homepage": "http://www.couchbase.com",
+  "scripts": {
+    "lab": "lab --coverage --threshold 80 --leaks dist/test",
+    "eslint": "eslint .",
+    "babel": "babel src --out-dir dist --source-maps",
+    "clean": "rm -rvf dist",
+    "test": "npm run babel && npm run eslint && npm run lab",
+    "start": "node ./index.js"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/corbinu/try-cb-nodejs.git"
+  },
+  "license": "Apache2",
+  "author": {
+    "name": "Todd Greenstein",
+    "email": "todd@couchbase.com"
+  },
+  "dependencies": {
+    "express": "^4.12.4",
+    "@corbinu/couchbase": "^2.0.8",
+    "body-parser": "^1.13.1",
+    "request": "^2.58.0",
+    "jsonwebtoken":"^5.0.2",
+    "haversine":"^1.0.0",
+    "ottoman":"git+https://github.com/couchbaselabs/node-ottoman.git#refactor"
+  },
+  "devDependencies": {
+    "babel": "^5.5.8",
+    "eslint": "^0.23.0",
+    "lab": "^5.10.0",
+    "code": "^1.4.1",
+    "source-map-support": "^0.3.1"
+  },
+  "contributors": [
+    {
+      "name": "Todd Greenstein",
+      "email": "todd@couchbase.com"
+    },
+    {
+      "name": "Corbin Uselton",
+      "email": "corbinu@decimal.io"
+    }
+  ]
+}
