@@ -10,7 +10,7 @@
     "clean": "rm -rvf dist",
     "test": "npm run babel && npm run eslint && npm run lab",
     "start": "node ./index.js",
-    "setup": "node ./dist/setup/index.js"
+    "setup": "node ./dist/setup.js"
   },
   "main": "index.js",
   "repository": {
@@ -23,7 +23,7 @@
     "email": "todd@couchbase.com"
   },
   "dependencies": {
-    "@corbinu/couchbase": "^2.0.8",
+    "couchbase": "^2.0.8",
     "body-parser": "^1.13.1",
     "convict": "^0.8.0",
     "express": "^4.12.4",
