@@ -167,6 +167,8 @@ provisionBucket((err, done) => {
 	if (err) return console.log("AUTOPROVISION_BU:ERR:FATAL:", err);
 
 	console.log("AUTOPROVISION_BU:DONE:", done);
+
+	process.exit(0);
 });
 
 /*
