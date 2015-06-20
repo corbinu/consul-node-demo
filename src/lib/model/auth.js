@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import config from "./../config";
+import config from "../config";
 import User from "./user.js";
 
 let sec = config.get("token_hash");

@@ -3,7 +3,7 @@ import http from "http";
 import request from "request";
 import ottoman from "ottoman";
 
-import config from "./../config";
+import config from "./config";
 
 let status = "offline";
 

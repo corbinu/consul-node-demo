@@ -1,8 +1,8 @@
 import bodyParser from "body-parser";
 
-import airport from "../model/airport";
-import flightPath from "../model/flightPath";
-import auth from "../model/auth.js";
+import airport from "./model/airport";
+import flightPath from "./model/flightPath";
+import auth from "./model/auth.js";
 
 let jsonParser = bodyParser.json();
 

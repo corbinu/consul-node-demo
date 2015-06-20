@@ -1,3 +1,6 @@
+import { install as installSourceMaps } from "source-map-support";
+installSourceMaps();
+
 import request from "request";
 
 import { query, init } from "./lib/db";
@@ -134,8 +137,8 @@ function provisionBucket(done) {
 		},
 		"form": JSON.stringify([config.get("cb.bucket")]),
 		"auth": {
-			"user": config.couchbase.user,
-			"pass": config.couchbase.password,
+			"user": config.get("cb.username"),
+			"pass": config.get("cb.password"),
 			"sendImmediately": true
 		}
 	}, (err, httpResponse) => {
@@ -254,7 +257,7 @@ function provisionAdmin(done) {
 		"url": "http://" + endPoint + "/settings/web",
 		"form": {
 			"password": config.couchbase.password,
-			"username": config.couchbase.user,
+			"username": config.couchbase.username,
 			"port": "SAME"
 		}
 	}, (err, httpResponse) => {

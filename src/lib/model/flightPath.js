@@ -1,7 +1,7 @@
 import haversine from "haversine";
 
-import config from "./../config";
-import { query } from "./../db";
+import config from "../config";
+import { query } from "../db";
 
 function convDate(dateStr) {
 	let d = new Date(Date.parse(dateStr));

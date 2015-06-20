@@ -1,5 +1,5 @@
-import { query } from "./../db";
-import config from "./../config";
+import { query } from "../db";
+import config from "../config";
 
 export function findAll(queryStr, done) {
 	let queryPrep;

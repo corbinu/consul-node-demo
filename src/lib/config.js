@@ -51,63 +51,64 @@ let conf = convict({
         "default": 3000,
         "env": "DEMO_WAIT"
     },
-    "cb.ip": {
-        "doc": "The couchbase ip address",
-        "format": "ipaddress",
-        "default": "127.0.0.1",
-        "env": "CB_IP"
-    },
-    "cb.port": {
-        "doc": "The couchbase port",
-        "format": "port",
-        "default": 8091,
-        "env": "CB_PORT"
-    },
-    "cb.n1qlport": {
-        "doc": "The couchbase N1QL port",
-        "format": "port",
-        "default": 8093,
-        "env": "CB_N1QLPORT"
-    },
-    "cb.bucket": {
-        "doc": "The couchbase bucket",
-        "format": String,
-        "default": "travel-sample",
-        "env": "CB_BUCKET"
-    },
-    "cb.username": {
-        "doc": "The couchbase username",
-        "format": String,
-        "default": "Administrator",
-        "env": "CB_USERNAME"
-    },
-    "cb.password": {
-        "doc": "The couchbase password",
-        "format": String,
-        "default": "password",
-        "env": "CB_PASSWORD"
-    },
-    "cb.index": {
-        "doc": "The couchbase index type",
-        "format": [ "gsi", "view" ],
-        "default": "gsi",
-        "env": "CB_INDEX_TYPE"
-    },
-    "cb.log": {
-        "doc": "How much couchbase logging should take place",
-        "format": ["none", "default", "verbose"],
-        "default": "default",
-        "env": "CB_LOG"
-    },
-    "cb.item_threshold": {
-        "doc": "How much many items should be in the bucket",
-        "format": "nat",
-        "default": 31565,
-        "env": "CB_ITEM_THRESHOLD"
+    "cb": {
+        "ip": {
+            "doc": "The couchbase ip address",
+            "format": "ipaddress",
+            "default": "127.0.0.1",
+            "env": "CB_IP"
+        },
+        "port": {
+            "doc": "The couchbase port",
+            "format": "port",
+            "default": 8091,
+            "env": "CB_PORT"
+        },
+        "n1qlport": {
+            "doc": "The couchbase N1QL port",
+            "format": "port",
+            "default": 8093,
+            "env": "CB_N1QLPORT"
+        },
+        "bucket": {
+            "doc": "The couchbase bucket",
+            "format": String,
+            "default": "travel-sample",
+            "env": "CB_BUCKET"
+        },
+        "username": {
+            "doc": "The couchbase username",
+            "format": String,
+            "default": "Administrator",
+            "env": "CB_USERNAME"
+        },
+        "password": {
+            "doc": "The couchbase password",
+            "format": String,
+            "default": "password",
+            "env": "CB_PASSWORD"
+        },
+        "index": {
+            "doc": "The couchbase index type",
+            "format": [ "gsi", "view" ],
+            "default": "gsi",
+            "env": "CB_INDEX_TYPE"
+        },
+        "log": {
+            "doc": "How much couchbase logging should take place",
+            "format": ["none", "default", "verbose"],
+            "default": "default",
+            "env": "CB_LOG"
+        },
+        "item_threshold": {
+            "doc": "How much many items should be in the bucket",
+            "format": "nat",
+            "default": 31565,
+            "env": "CB_ITEM_THRESHOLD"
+        }
     }
 });
 
-conf.loadFile();
 conf.loadFile([`./config/${conf.get("env")}.json`]);
 
 conf.validate();

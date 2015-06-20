@@ -1,6 +1,6 @@
 let ottoman = require("ottoman");
 
-import { ODMBucket } from "./../db";
+import { ODMBucket } from "../db";
 
 ottoman.bucket = ODMBucket;
 
