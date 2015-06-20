@@ -101,9 +101,11 @@ then
     echo '#'
     echo '# Existing cluster...'
     echo '#'
+    
+    cd /usr/src/app && npm start
 fi
 
-if [ $CLUSTERFOUND != 1 ]
+if [ "$1" = 'bootstrap' ]
     then
 
     echo
@@ -115,14 +117,15 @@ if [ $CLUSTERFOUND != 1 ]
 
     if [[ $CB_BUCKET_MEM && ${CB_BUCKET_MEM-x} ]]
         then
+        CB_BUCKET_MEM=CB_BUCKET_MEM
     else
         CB_BUCKET_MEM=500
     fi
 
     curl -X POST -u $CB_USERNAME:$CB_PASSWORD -d name=$CB_BUCKET -d ramQuotaMB=$CB_BUCKET_MEM http://$CB_IP:8091/pools/default/buckets
-fi
 
-cd /usr/src/app && npm start
+    cd /usr/src/app && npm start
+fi
 
 echo
 echo '#'
