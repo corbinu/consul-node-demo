@@ -112,6 +112,14 @@ if [ $CLUSTERFOUND != 1 ]
     echo '#'
 
     cd /usr/src/app && npm run setup
+
+    if [[ $CB_BUCKET_MEM && ${CB_BUCKET_MEM-x} ]]
+        then
+    else
+        CB_BUCKET_MEM=500
+    fi
+
+    curl -X POST -u $CB_USERNAME:$CB_PASSWORD -d name=$CB_BUCKET -d ramQuotaMB=$CB_BUCKET_MEM http://$CB_IP:8091/pools/default/buckets
 fi
 
 cd /usr/src/app && npm start
