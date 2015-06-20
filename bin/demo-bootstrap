@@ -1,0 +1,81 @@
+#!/bin/bash
+
+#
+# This script is run once on the first demo instance to bootstrap the cluster
+#
+echo
+echo '#'
+echo '# Checking Consul availability'
+echo '#'
+
+curl -fs --retry 7 --retry-delay 3 http://consul:8500/v1/agent/services &> /dev/null
+if [ $? -ne 0 ]
+then
+    echo '#'
+    echo '# Consul is required, but unreachable'
+    echo '#'
+    exit
+else
+    echo '# Consul instance found and responsive'
+    echo '#'
+fi
+
+
+echo '#'
+echo '# Looking for an existing cluster'
+echo '#'
+
+CLUSTERFOUND=0
+CLUSTERIP=$(curl -L -s -f http://consul:8500/v1/catalog/service/demo | json -aH ServiceAddress | head -1)
+if [ -n "$CLUSTERIP" ]
+then
+    let CLUSTERFOUND=1
+
+    echo
+    echo '#'
+    echo '# Existing cluster...'
+    echo '#'
+fi
+
+if [ $CLUSTERFOUND != 1 ]
+    then
+
+    echo
+    echo '#'
+    echo '# Initializing app'
+    echo '#'
+
+    cd /usr/src/app && npm run setup
+fi
+
+cd /usr/src/app && npm start
+
+echo
+echo '#'
+echo '# Confirming cluster health...'
+echo '#'
+
+DEMORESPONSIVE=0
+while [ $DEMORESPONSIVE != 1 ]; do
+    echo -n '.'
+
+    curl http://localhost:3000/api/airport/findAll
+    if [ $? -eq 0 ]
+    then
+        let DEMORESPONSIVE=1
+    else
+        sleep .7
+    fi
+
+    # if this never exits, then it will never register as a healthy node in the cluster
+    # watch the logs for that...
+done
+
+echo
+echo '#'
+echo '# Registering service instance'
+echo '#'
+
+curl -f --retry 7 --retry-delay 3 http://consul:8500/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s"}' $MYIPPRIVATE $MYIPPRIVATE)"
+
+installed
