@@ -9,26 +9,29 @@
     "babel": "babel src --out-dir dist --source-maps",
     "clean": "rm -rvf dist",
     "test": "npm run babel && npm run eslint && npm run lab",
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "setup": "node ./dist/setup/index.js"
   },
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/corbinu/try-cb-nodejs.git"
   },
-  "license": "Apache2",
+  "license": "Apache-2.0",
   "author": {
     "name": "Todd Greenstein",
     "email": "todd@couchbase.com"
   },
   "dependencies": {
-    "express": "^4.12.4",
     "@corbinu/couchbase": "^2.0.8",
     "body-parser": "^1.13.1",
+    "convict": "^0.8.0",
+    "express": "^4.12.4",
+    "haversine": "^1.0.0",
+    "jsonwebtoken": "^5.0.2",
+    "ottoman": "git+https://github.com/couchbaselabs/node-ottoman.git#refactor",
     "request": "^2.58.0",
-    "jsonwebtoken":"^5.0.2",
-    "haversine":"^1.0.0",
-    "ottoman":"git+https://github.com/couchbaselabs/node-ottoman.git#refactor"
+    "source-map-support": "^0.3.1"
   },
   "devDependencies": {
     "babel": "^5.5.8",

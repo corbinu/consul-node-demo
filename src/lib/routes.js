@@ -1,8 +1,8 @@
-let bodyParser = require("body-parser");
-let airport = require("../model/airport");
-let flightPath = require("../model/flightPath");
-let rawImport = require("../model/raw/rawImport");
-let auth = require("../model/auth.js");
+import bodyParser from "body-parser";
+
+import airport from "../model/airport";
+import flightPath from "../model/flightPath";
+import auth from "../model/auth.js";
 
 let jsonParser = bodyParser.json();
 
@@ -48,18 +48,6 @@ export default function (app) {
 			res.status = 400;
 			res.send({"flightPath": "bad request"});
 		}
-	});
-
-	app.post("/api/status/provisionCB", (req, res) => {
-		rawImport.provisionCB((err, done) => {
-			if (err) {
-				res.status = 400;
-				res.send(err);
-				return;
-			}
-			res.status = 202;
-			res.send(done);
-		});
 	});
 
 	app.post("/api/user/login", jsonParser, (req, res) => {

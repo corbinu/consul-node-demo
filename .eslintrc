@@ -9,6 +9,7 @@
   "rules": {
     "no-underscore-dangle": 0,
     "no-shadow": 0,
+    "no-inner-declarations": 0,
     "valid-jsdoc": 1,
     "curly": [2,"multi-line"],
     "guard-for-in": 2,

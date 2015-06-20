@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import config from "./../config";
 import User from "./user.js";
 
-let sec = config.application.hashToken;
+let sec = config.get("token_hash");
 
 export function createLogin(newUser, newPass, done) {
 	newUser = newUser.toLowerCase();
