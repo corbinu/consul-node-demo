@@ -30,13 +30,13 @@ while [ $COUCHBASERESPONSIVE != 1 ]; do
     echo -n '.'
 
     # test the default u/p
-    couchbase-cli server-info -c $CB_IP:8091 -u access -p password &> /dev/null
+    curl -u access:password http://$CB_IP:8091/pools &> /dev/null
     if [ $? -eq 0 ]; then
         let COUCHBASERESPONSIVE=1
     fi
 
     # test the alternate u/p
-    couchbase-cli server-info -c $CB_IP:8091 -u $CB_USERNAME -p $CB_PASSWORD &> /dev/null
+    curl -u $CB_USERNAME:$CB_PASSWORD http://$CB_IP:8091/pools &> /dev/null
     if [ $? -eq 0 ]
     then
         let COUCHBASERESPONSIVE=1
