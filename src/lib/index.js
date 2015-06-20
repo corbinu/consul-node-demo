@@ -6,7 +6,7 @@ import setupRoutes from "./routes";
 
 let app = express();
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.resolve("public")));
 
 setupRoutes(app);
 

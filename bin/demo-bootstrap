@@ -20,6 +20,32 @@ else
     echo '#'
 fi
 
+echo
+echo '#'
+echo '# Demo Testing to see if Couchbase is running yet'
+echo '#'
+
+COUCHBASERESPONSIVE=0
+while [ $COUCHBASERESPONSIVE != 1 ]; do
+    echo -n '.'
+
+    # test the default u/p
+    couchbase-cli server-info -c $CB_IP:8091 -u access -p password &> /dev/null
+    if [ $? -eq 0 ]; then
+        let COUCHBASERESPONSIVE=1
+    fi
+
+    # test the alternate u/p
+    couchbase-cli server-info -c $CB_IP:8091 -u $CB_USERNAME -p $CB_PASSWORD &> /dev/null
+    if [ $? -eq 0 ]
+    then
+        let COUCHBASERESPONSIVE=1
+    else
+        sleep 10
+    fi
+done
+sleep 1
+
 
 echo '#'
 echo '# Looking for an existing cluster'
