@@ -60,6 +60,7 @@ export function init(done) {
 				if (parseInt(JSON.parse(bodyB).basicStats.itemCount, 10) > config.get("cb.item_threshold")) {
 					db = myCluster.openBucket(bucket);
 					ODMBucket = myCluster.openBucket(bucket);
+                    ottoman.store.bucket=ODMBucket;
 
 					query("CREATE INDEX temp ON `" + config.get("cb.bucket") + "`(non) USING " + config.get("cb.index"), (err, res) => {
 						if (err) {
