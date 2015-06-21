@@ -40,6 +40,19 @@ while [ $CBFOUND != 1 ]; do
     fi
 done
 
+if [[ $CB_PASSWORD && ${CB_PASSWORD-x} ]]
+    then
+    CB_PASSWORD=CB_PASSWORD
+    else
+    CB_PASSWORD="password"
+fi
+if [[ $CB_USERNAME && ${CB_USERNAME-x} ]]
+    then
+    CB_USERNAME=CB_USERNAME
+else
+    CB_USERNAME="Administrator"
+fi
+
 COUCHBASERESPONSIVE=0
 while [ $COUCHBASERESPONSIVE != 1 ]; do
     echo -n '.'
