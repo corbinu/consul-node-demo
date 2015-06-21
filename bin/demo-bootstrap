@@ -52,6 +52,12 @@ if [[ $CB_USERNAME && ${CB_USERNAME-x} ]]
 else
     CB_USERNAME="Administrator"
 fi
+if [[ $CB_BUCKET && ${CB_BUCKET-x} ]]
+    then
+    CB_BUCKET=CB_BUCKET
+else
+    CB_BUCKET="travel-sample"
+fi
 
 COUCHBASERESPONSIVE=0
 while [ $COUCHBASERESPONSIVE != 1 ]; do
