@@ -1,8 +1,12 @@
 let ottoman = require("ottoman");
 
-import { ODMBucket } from "../db";
+import config from "../config";
 
-ottoman.bucket = ODMBucket;
+import { myCluster } from "../db";
+
+let bucket = config.get("cb.bucket");
+
+ottoman.bucket = myCluster.openBucket(bucket);
 
 let Flight = require("./flight");
 

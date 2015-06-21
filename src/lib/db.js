@@ -2,8 +2,6 @@ import { Cluster, N1qlQuery } from "couchbase";
 import http from "http";
 import request from "request";
 
-let ottoman = require("ottoman");
-
 import config from "./config";
 
 let status = "offline";
@@ -11,7 +9,7 @@ let status = "offline";
 export let endPoint = config.get("cb.ip") + ":" + config.get("cb.port");
 let n1qlService = config.get("cb.ip") + ":" + config.get("cb.n1qlport");
 
-let myCluster = new Cluster(endPoint);
+export let myCluster = new Cluster(endPoint);
 let db;
 
 export let myBucket;
@@ -62,7 +60,6 @@ export function init(done) {
 				if (parseInt(JSON.parse(bodyB).basicStats.itemCount, 10) > config.get("cb.item_threshold")) {
 					db = myCluster.openBucket(bucket);
 					ODMBucket = myCluster.openBucket(bucket);
-                    ottoman.store.bucket=ODMBucket;
 
 					query("CREATE INDEX temp ON `" + config.get("cb.bucket") + "`(non) USING " + config.get("cb.index"), (err, res) => {
 						if (err) {
