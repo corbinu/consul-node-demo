@@ -9,13 +9,11 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-/usr/local/bin/demo-bootstrap
-
 echo "First time 'round the mulberry bush..."
 while true; do
     sleep 600
     echo "Once more 'round the mulberry bush..."
-    curl localhost:3000
+    curl http://localhost:3000/api/airport/findAll
 done
 
 exec "$@"
