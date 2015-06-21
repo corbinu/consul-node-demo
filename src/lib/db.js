@@ -1,7 +1,8 @@
 import { Cluster, N1qlQuery } from "couchbase";
-import ottoman from "ottoman";
 import http from "http";
 import request from "request";
+
+let ottoman = require("ottoman");
 
 import config from "./config";
 

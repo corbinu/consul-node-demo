@@ -111,7 +111,7 @@ echo '# Looking for an existing demo cluster'
 echo '#'
 
 CLUSTERFOUND=0
-CLUSTERIP=$(curl -L -s -f http://consul:8500/v1/catalog/service/demo | json -aH ServiceAddress | head -1)
+CLUSTERIP=$(curl -L -s -f http://consul:8500/v1/catalog/service/demo | json -aH Address | head -1)
 if [ -n "$CLUSTERIP" ]
 then
     let CLUSTERFOUND=1
