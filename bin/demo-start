@@ -13,7 +13,4 @@ echo "First time 'round the mulberry bush..."
 while true; do
     sleep 600
     echo "Once more 'round the mulberry bush..."
-    curl http://localhost:3000/api/airport/findAll
 done
-
-exec "$@"

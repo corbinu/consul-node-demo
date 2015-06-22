@@ -1,5 +1,6 @@
 import { Cluster, N1qlQuery } from "couchbase";
 import http from "http";
+import ottoman from "ottoman";
 import request from "request";
 
 import config from "./config";
@@ -111,7 +112,103 @@ export function init(done) {
 	});
 }
 
-init(() => {});
+function initOther(done) {
+	console.log({"init": "check"});
+
+	if (config.get("log") === "verbose") console.log("VERBOSE:TRYING QUERY:", "http://" + n1qlService + "/query?statement=SELECT+name+FROM+system%3Akeyspaces");
+
+	request.get({
+		"url": "http://" + n1qlService + "/query?statement=SELECT+name+FROM+system%3Akeyspaces",
+		"auth": {
+			"user": config.get("cb.username"),
+			"pass": config.get("cb.password"),
+			"sendImmediately": true
+		}
+	}, (err, response) => {
+		if (err) {
+			console.log({"init": "not ready"});
+
+			if (config.get("log") === "verbose") console.log("↳ VERBOSE:ERR:", err);
+
+			return done(false);
+		}
+		if (response.statusCode === 200) {
+			if (config.get("log") === "verbose") {
+				console.log("↳ VERBOSE:QUERY SERVICE:UP");
+				console.log("--VERBOSE:TRYING:ITEM COUNT", "http://" + endPoint + "/pools/default/buckets/" + bucket);
+			}
+
+			request.get({
+				"url": "http://" + endPoint + "/pools/default/buckets/" + bucket,
+				"auth": {
+					"user": config.get("cb.username"),
+					"pass": config.get("cb.password"),
+					"sendImmediately": true
+				}
+			}, (err, responseB, bodyB) => {
+				if (err) {
+					console.log({"init": "not ready"});
+					if (config.get("log") === "verbose") console.log("--↳ VERBOSE:ERR", err);
+
+					return done(false);
+				}
+
+				if (parseInt(JSON.parse(bodyB).basicStats.itemCount, 10) > config.get("cb.item_threshold")) {
+					db = myCluster.openBucket(bucket);
+					ODMBucket = myCluster.openBucket(bucket);
+					ottoman.store.bucket = ODMBucket;
+
+					query("CREATE INDEX temp ON `" + config.get("cb.bucket") + "`(non) USING " + config.get("cb.index"), (err, res) => {
+						if (err) {
+							console.log({"init": "not ready"});
+							return done(false);
+						}
+
+						if (res) {
+							query("SELECT COUNT(*) FROM system:indexes WHERE state='online'", (err, onlineCount) => {
+								if (err) {
+									console.log({"init": "not ready"});
+
+									return done(false);
+								}
+
+								if (onlineCount) {
+									console.log("INDEXES ONLINE:", onlineCount);
+									if (typeof onlineCount[0] !== "undefined") {
+
+										if (onlineCount[0].$1 === 1) {
+											query("DROP INDEX `" + config.get("cb.bucket") + "`.temp USING " + config.get("cb.index"), (err, dropped) => {
+												if (err) {
+													console.log({"init": "not ready"});
+
+													return done(false);
+												}
+												if (dropped && status !== "online") {
+													status = "online";
+													console.log({"init": "ready"});
+
+													return done(true);
+												}
+											});
+										}
+									}
+								}
+							});
+						}
+					});
+				} else {
+					console.log({"init": "not ready"});
+
+					if (config.get("log") === "verbose") console.log("--↳ VERBOSE:ERR:ITEM COUNT", JSON.parse(bodyB).basicStats.itemCount);
+
+					return done(false);
+				}
+			});
+		}
+	});
+}
+
+initOther(() => {});
 
 export function reset(done) {
 	let mgr = myBucket.manager(config.get("cb.username"), config.get("cb.password"));

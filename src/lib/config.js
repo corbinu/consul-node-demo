@@ -42,13 +42,13 @@ let conf = convict({
     "check_interval": {
         "doc": "Check interval for setting up db",
         "format": "nat",
-        "default": 1000,
+        "default": 3000,
         "env": "DEMO_CHECK_INTERVAL"
     },
     "wait": {
         "doc": "How long to wait for DB indexes to be ready",
         "format": "nat",
-        "default": 3000,
+        "default": 5000,
         "env": "DEMO_WAIT"
     },
     "cb": {

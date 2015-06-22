@@ -110,21 +110,7 @@ echo '#'
 echo '# Looking for an existing demo cluster'
 echo '#'
 
-CLUSTERFOUND=0
-CLUSTERIP=$(curl -L -s -f http://consul:8500/v1/catalog/service/demo | json -aH Address | head -1)
-if [ -n "$CLUSTERIP" ]
-then
-    let CLUSTERFOUND=1
-
-    echo
-    echo '#'
-    echo '# Existing cluster...'
-    echo '#'
-
-    cd /usr/src/app && nohup npm start &
-fi
-
-if [ "$1" = 'bootstrap' ]
+if [ "$1" = 'setup' ]
     then
 
     echo
@@ -144,34 +130,51 @@ if [ "$1" = 'bootstrap' ]
     curl -X POST -u $CB_USERNAME:$CB_PASSWORD -d ramQuotaMB=$CB_BUCKET_MEM http://$CB_IP:8091/pools/default/buckets/$CB_BUCKET
 
     cd /usr/src/app && nohup npm start &
-fi
-
-echo
-echo '#'
-echo '# Confirming cluster health...'
-echo '#'
-
-DEMORESPONSIVE=0
-while [ $DEMORESPONSIVE != 1 ]; do
-    echo -n '.'
-
-    curl http://localhost:3000/api/airport/findAll
-    if [ $? -eq 0 ]
+elif [ "$1" = 'production' ]
     then
-        let DEMORESPONSIVE=1
-    else
-        sleep .7
-    fi
+    echo
+    echo '#'
+    echo '# Starting demo...'
+    echo '#'
 
-    # if this never exits, then it will never register as a healthy node in the cluster
-    # watch the logs for that...
-done
+    cd /usr/src/app && nohup npm start &
 
-echo
-echo '#'
-echo '# Registering service instance'
-echo '#'
+    echo
+    echo '#'
+    echo '# Confirming cluster health...'
+    echo '#'
 
-curl -f --retry 7 --retry-delay 3 http://consul:8500/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s"}' $MYIPPRIVATE $MYIPPRIVATE)"
+    DEMORESPONSIVE=0
+    while [ $DEMORESPONSIVE != 1 ]; do
+        echo -n '.'
 
-echo "installed"
+        curl http://localhost:3000/api/airport/findAll
+        if [ $? -eq 0 ]
+        then
+            let DEMORESPONSIVE=1
+        else
+            sleep .7
+        fi
+
+        # if this never exits, then it will never register as a healthy node in the cluster
+        # watch the logs for that...
+    done
+
+    echo
+    echo '#'
+    echo '# Registering service instance'
+    echo '#'
+
+    curl -f --retry 7 --retry-delay 3 http://consul:8500/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s"}' $MYIPPRIVATE $MYIPPRIVATE)"
+
+    echo "installed"
+
+elif [ "$1" = 'develop' ]
+    then
+    echo
+    echo '#'
+    echo '# Starting demo...'
+    echo '#'
+
+    cd /usr/src/app && npm start
+fi

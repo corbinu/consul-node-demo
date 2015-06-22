@@ -21,6 +21,7 @@ export function createLogin(newUser, newPass, done) {
 
 	filterScan(newUser, (filtcb) => {
 		if (filtcb) {
+
 			User.findByName(newUser, (err, user) => {
 				if (err) return done(err, null);
 
