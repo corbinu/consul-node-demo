@@ -19,7 +19,7 @@ consul:
 # Scale this tier and each additional container/instance will automatically self-configure as a member of the cluster
 #
 couchbase:
-    image: corbinu/triton-couchbase
+    image: corbinu/consul-couchbase
     links:
     - consul
     mem_limit: 2048m
