@@ -1,4 +1,4 @@
-#!/bin/bash
+x#!/bin/bash
 
 #
 # This script is run once on the first demo instance to bootstrap the cluster
@@ -124,7 +124,7 @@ if [ "$1" = 'setup' ]
         then
         CB_BUCKET_MEM=CB_BUCKET_MEM
     else
-        CB_BUCKET_MEM=500
+        CB_BUCKET_MEM=512
     fi
 
     curl -X POST -u $CB_USERNAME:$CB_PASSWORD -d ramQuotaMB=$CB_BUCKET_MEM http://$CB_IP:8091/pools/default/buckets/$CB_BUCKET
