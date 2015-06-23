@@ -1,8 +1,12 @@
 let ottoman = require("ottoman");
 
-import { ODMBucket } from "./db";
+import { Cluster, N1qlQuery } from "couchbase";
 
-ottoman.bucket = ODMBucket;
+import config from "../config";
+
+import { ODMBucket } from "../db";
+
+//ottoman.bucket = ODMBucket;
 
 let Flight = require("./flight");
 

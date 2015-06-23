@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 
-import config from "./../config";
+import config from "../config";
 import User from "./user.js";
 
-let sec = config.application.hashToken;
+let sec = config.get("token_hash");
 
 export function createLogin(newUser, newPass, done) {
 	newUser = newUser.toLowerCase();
@@ -21,6 +21,7 @@ export function createLogin(newUser, newPass, done) {
 
 	filterScan(newUser, (filtcb) => {
 		if (filtcb) {
+
 			User.findByName(newUser, (err, user) => {
 				if (err) return done(err, null);
 

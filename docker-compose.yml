@@ -1,0 +1,50 @@
+#
+# Using a single Consul host is _highly_ discouraged, but yolo
+#
+consul:
+    command: -server -bootstrap -ui-dir /ui
+    image: progrium/consul:latest
+    mem_limit: 256m
+    ports:
+    - 53
+    - 8300
+    - 8301
+    - 8302
+    - 8400
+    - 8500
+    restart: always
+
+#
+# Manually bootstrap the first instance, then...
+# Scale this tier and each additional container/instance will automatically self-configure as a member of the cluster
+#
+couchbase:
+    image: corbinu/triton-couchbase
+    links:
+    - consul
+    mem_limit: 2048m
+    environment:
+        CB_BUCKET_MEM: 512
+        CB_INDEX_MEM: 1024
+    ports:
+    - 8091
+    - 8092
+    - 11207
+    - 11210
+    - 11211
+    - 18091
+    - 18092
+    restart: always
+
+demo:
+    build: .
+    links:
+    - consul
+    mem_limit: 256m
+    environment:
+        NODE_ENV: "development"
+    volumes:
+    - .:/usr/src/app
+    ports:
+    - 3000
+    restart: always
