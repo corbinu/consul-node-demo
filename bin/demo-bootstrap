@@ -1,4 +1,4 @@
-x#!/bin/bash
+#!/bin/bash
 
 #
 # This script is run once on the first demo instance to bootstrap the cluster
