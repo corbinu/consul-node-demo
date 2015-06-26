@@ -2,6 +2,8 @@
 
 PREFIX=cnd
 
+export DOCKER_CLIENT_TIMEOUT=300
+
 BOOT2DOCKER=$(docker info | grep boot2docker)
 if [[ $BOOT2DOCKER && ${BOOT2DOCKER-x} ]]
     then
