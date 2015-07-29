@@ -28,7 +28,7 @@ CBFOUND=0
 while [ $CBFOUND != 1 ]; do
     echo -n '.'
 
-    export CB_IP=$(curl -L -s -f http://consul:8500/v1/catalog/service/couchbase | json -aH ServiceAddress | head -1)
+    export CB_IP=$(curl -L -s -f http://consul:8500/v1/catalog/service/couchbase | json -aH ServiceAddress | tail -1)
     if [ -n "$CB_IP" ]
     then
         let CBFOUND=1
