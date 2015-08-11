@@ -8,7 +8,21 @@ echo '#'
 echo '# Checking Consul availability'
 echo '#'
 
-curl -fs --retry 7 --retry-delay 3 http://consul:8500/v1/agent/services &> /dev/null
+if [[ $CONSUL_IP && ${CONSUL_IP-x} ]]
+    then
+    export CONSUL_IP=$CONSUL_IP
+    if [[ $CONSUL_PORT && ${CONSUL_PORT-x} ]]
+        then
+        export CONSUL_PORT=$CONSUL_PORT
+    else
+        export CONSUL_PORT=8500
+    fi
+else
+    export CONSUL_IP=consul
+    export CONSUL_PORT=8500
+fi
+
+curl -fs --retry 7 --retry-delay 3 http://$CONSUL_IP:$CONSUL_PORT/v1/agent/services &> /dev/null
 if [ $? -ne 0 ]
 then
     echo '#'
@@ -28,7 +42,7 @@ CBFOUND=0
 while [ $CBFOUND != 1 ]; do
     echo -n '.'
 
-    export CB_IP=$(curl -L -s -f http://consul:8500/v1/catalog/service/couchbase | json -aH ServiceAddress | head -1)
+    export CB_IP=$(curl -L -s -f http://$CONSUL_IP:$CONSUL_PORT/v1/catalog/service/couchbase | json -aH ServiceAddress | tail -1)
     if [ -n "$CB_IP" ]
     then
         let CBFOUND=1
@@ -165,7 +179,7 @@ elif [ "$1" = 'production' ]
     echo '# Registering service instance'
     echo '#'
 
-    curl -f --retry 7 --retry-delay 3 http://consul:8500/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s"}' $MYIPPRIVATE $MYIPPRIVATE)"
+    curl -f --retry 7 --retry-delay 3 http://$CONSUL_IP:$CONSUL_PORT/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s"}' $MYIPPRIVATE $MYIPPRIVATE)"
 
     echo "installed"
 

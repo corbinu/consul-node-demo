@@ -26,6 +26,9 @@ couchbase:
     environment:
         CB_BUCKET_MEM: 512
         CB_INDEX_MEM: 1024
+        COUCHBASE_SERVICE_INDEX: true
+        COUCHBASE_SERVICE_QUERY: true
+        COUCHBASE_SERVICE_DATA: true
     ports:
     - 8091
     - 8092
@@ -38,6 +41,7 @@ couchbase:
 
 demo:
     build: .
+    dockerfile: Dockerfile_dev
     links:
     - consul
     mem_limit: 256m
