@@ -177,7 +177,7 @@ elif [ "$1" = 'production' ]
     echo '# Registering service instance'
     echo '#'
 
-    curl -f --retry 7 --retry-delay 3 http://$CONSUL_IP:$CONSUL_PORT/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s"}' $MYIPPRIVATE $MYIPPRIVATE)"
+    curl -f --retry 7 --retry-delay 3 http://$CONSUL_IP:$CONSUL_PORT/v1/agent/service/register -d "$(printf '{"ID":"demo-%s","Name":"demo","Address":"%s", "Port":3000, "Check":{"HTTP": "http://localhost:3000", "Interval": "10s"}}' $MYIPPRIVATE $MYIPPRIVATE)"
 
     echo "installed"
 
