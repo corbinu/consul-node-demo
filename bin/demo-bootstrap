@@ -141,9 +141,7 @@ if [ "$1" = 'setup' ]
         CB_BUCKET_MEM=512
     fi
 
-    curl -X POST -u $CB_USERNAME:$CB_PASSWORD -d ramQuotaMB=$CB_BUCKET_MEM http://$CB_IP:8091/pools/default/buckets/$CB_BUCKET
-
-    cd /usr/src/app && nohup npm start &
+    curl -X POST -u $CB_USERNAME:$CB_PASSWORD -d ramQuotaMB="$CB_BUCKET_MEM" http://$CB_IP:8091/pools/default/buckets/$CB_BUCKET
 elif [ "$1" = 'production' ]
     then
     echo
